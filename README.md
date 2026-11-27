@@ -2,7 +2,7 @@
 
 A four-stage analog audio system on a single 12 V supply: a 2-input mixer, a 5-band graphic equalizer, a 20-LED level meter and an LM386 speaker amplifier. Each stage is drawn as a schematic, simulated in SPICE (ngspice) and checked by automated tests.
 
-**Built:** August 2026 · based on a Circuit Analysis II lab project
+**Built:** August 2024 · based on a Circuit Analysis II lab project (Summer 2024)
 
 <p align="center">
   <img src="media/build_photo.jpg" width="75%" alt="The audio system built for the course: enclosure with two speakers, controls on the top panel">
