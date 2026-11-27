@@ -8,7 +8,12 @@ A four-stage analog audio system on a single 12 V supply: a 2-input mixer, a 5-b
   <img src="media/build_photo.jpg" width="75%" alt="The audio system built for the course: enclosure with two speakers, controls on the top panel">
 </p>
 
-**Demo video:** [media/demo_build.mp4](media/demo_build.mp4), the system playing music from a phone while the PCBs were being wired into the enclosure.
+**Demo video:** the system playing music from a phone while the PCBs were being wired into the enclosure.
+
+
+https://github.com/user-attachments/assets/2613bf17-70f5-4d04-a20f-9839de592ebc
+
+
 
 The unit built for the course has two mixer knobs, five equalizer knobs, a visualizer knob with a 20-LED meter, an amplifier volume knob and two speakers, with hand-etched PCBs inside. This repository models the same panel:
 
