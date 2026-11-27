@@ -1,0 +1,46 @@
+* Shared models for the audio processor (ngspice).
+* Generic op-amp: 100 dB open-loop gain, 10 MHz gain-bandwidth (LM833 class),
+* output swings to 1.5 V from each rail, 50 ohm output resistance. No slew limit.
+.subckt OPAMP inp inn vcc vee out
+Rin inp inn 10Meg
+Gm 0 n1 inp inn 1m
+Rp n1 0 100Meg
+Cp n1 0 15.9p
+* internal node limited to +-7 V so the output recovers quickly from saturation
+Vhi hi 0 7
+Vlo lo 0 -7
+Dh n1 hi DLIM
+Dl lo n1 DLIM
+.model DLIM D(IS=1e-14 N=0.05)
+Bo o1 0 V = max(min((v(vcc)+v(vee))/2 + v(n1), v(vcc)-1.5), v(vee)+1.5)
+Ro o1 out 50
+.ends OPAMP
+
+* Idealised LM386: inputs referenced to ground through 50k, output biased at Vs/2,
+* voltage gain set by GAIN (20 with pins 1-8 open, 200 with 10 uF across them),
+* -3 dB bandwidth 300 kHz at gain 20, output clips 1 V from each rail, 0.5 ohm output.
+.subckt LM386 inp inn vs gnd out params: GAIN=20
+Rip inp gnd 50k
+Rin inn gnd 50k
+Gm gnd n1 inp inn 1m
+Rp n1 gnd {GAIN*1k}
+Cp n1 gnd {1/(2*3.14159*{GAIN*1k}*300k*20/GAIN)}
+Bo o1 gnd V = max(min(v(vs)/2 + v(n1), v(vs)-1), 1)
+Ro o1 out 0.5
+.ends LM386
+
+* Gyrator: simulated inductor L = RL*RG*CG with series resistance RL, to node REF.
+.subckt GYRATOR node ref vcc vee params: RL=680 RG=68k CG=10n
+Cg node x {CG}
+Rg x ref {RG}
+Xbuf x fb vcc vee fb OPAMP
+Rl fb node {RL}
+.ends GYRATOR
+
+.model D1N4148 D(IS=2.52n RS=0.568 N=1.752 CJO=4p TT=20n BV=100)
+* 2N3904 (widely published small-signal model)
+.model Q2N3904 NPN(IS=6.734f XTI=3 EG=1.11 VAF=74.03 BF=416.4 NE=1.259 ISE=6.734f IKF=66.78m
++ XTB=1.5 BR=.7371 NC=2 ISC=0 IKR=0 RC=1 CJC=3.638p MJC=.3085 VJC=.75 FC=.5 CJE=4.493p
++ MJE=.2593 VJE=.75 TR=239.5n TF=301.2p ITF=.4 VTF=4 XTF=2 RB=10)
+* Generic 5 mm red LED: about 1.95 V at 20 mA
+.model LEDRED D(IS=1e-18 N=2 RS=2)
